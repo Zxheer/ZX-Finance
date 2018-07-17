@@ -1,0 +1,30 @@
+unit dmFinaces_u;
+
+interface
+
+uses
+  SysUtils, Classes, DB, ADODB;
+
+type
+  TDmFinaces = class(TDataModule)
+    ConFinances: TADOConnection;
+    tblInc: TADOTable;
+    tblExp: TADOTable;
+    tblYeahEnd: TADOTable;
+    dsrInc: TDataSource;
+    dsrExp: TDataSource;
+    dsrYearEnd: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DmFinaces: TDmFinaces;
+
+implementation
+
+{$R *.dfm}
+
+end.

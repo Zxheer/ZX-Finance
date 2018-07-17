@@ -1,0 +1,53 @@
+object DmFinaces: TDmFinaces
+  OldCreateOrder = False
+  Height = 463
+  Width = 685
+  object ConFinances: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\Zaheer\Des' +
+      'ktop\PAT 24 AUG\12ITPhase3EbrahimZaheer\Finances.mdb;Mode=ReadWr' +
+      'ite|Share Deny None;Persist Security Info=False'
+    LoginPrompt = False
+    Mode = ADODB
+    Provider = 'Microsoft.Jet.OLEDB.4.0'
+    Left = 336
+    Top = 72
+  end
+  object tblInc: TADOTable
+    Connection = ConFinances
+    CursorType = ctStatic
+    TableName = 'Income'
+    Left = 144
+    Top = 224
+  end
+  object tblExp: TADOTable
+    Connection = ConFinances
+    CursorType = ctStatic
+    TableName = 'Expenses'
+    Left = 336
+    Top = 216
+  end
+  object tblYeahEnd: TADOTable
+    Connection = ConFinances
+    CursorType = ctStatic
+    TableName = 'YearEndTotals'
+    Left = 520
+    Top = 232
+  end
+  object dsrInc: TDataSource
+    DataSet = tblInc
+    Left = 168
+    Top = 328
+  end
+  object dsrExp: TDataSource
+    DataSet = tblExp
+    Left = 344
+    Top = 328
+  end
+  object dsrYearEnd: TDataSource
+    DataSet = tblYeahEnd
+    Left = 512
+    Top = 328
+  end
+end

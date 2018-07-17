@@ -1,0 +1,13 @@
+Gross profit as a percentage on sales
+Profit mark-up percentage
+Net Profit before tax as a percentage on sales
+Operating expenses as a percentage on sales
+Operating profit as a percentage on sales
+Operating profit as a percentage on cost of sales
+Average debtors collection period in days
+Average creditors payment period in days
+Rate of stock turnover in times
+Solvency Ratio : 1
+Acid-Test ratio : 1
+Current Ratio : 1
+Net Working Capital in Rands

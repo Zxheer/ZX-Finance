@@ -1,0 +1,23 @@
+unit dmFinaces_u;
+
+interface
+
+uses
+  SysUtils, Classes;
+
+type
+  TDmFinaces = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DmFinaces: TDmFinaces;
+
+implementation
+
+{$R *.dfm}
+
+end.

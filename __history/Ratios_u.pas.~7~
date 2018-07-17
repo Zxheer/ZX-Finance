@@ -1,0 +1,23 @@
+unit Ratios_u;
+
+interface
+uses
+  sysutils,dateutils,math,dialogs;
+
+type
+  TRatios = class(TObject)
+  private
+    fNetProfit,fTax,fOtherOppInc,fOpExp,fGrossProf,fProfBeforeIntExp,fProfBeforeTax,fOpProf,fSales,fCOS,fRent,fComm,fDep,fAudit,fSal,fBadDebts,fBankChar,fIntInc,fIntExp,fTotalLia,fTotalAss,fCC,fDC,fTS,fCurrLia,fCurrAss : real;
+    fDate : integer;
+
+
+  public
+  Constructor Create(pNetProfit,pTax,pOtherOppInc,pOpExp,pGrossProf,pProfBeforeIntExp,pProfBeforeTax,pOpProf,pSales,pCOS,pRent,pComm,pDep,pAudit,pSal,pBadDebts,pBankChar,pIntInc,pIntExp,pTotalLia,pTotalAss,pCC,pDC,pTS,pCurrLia,pCurrAss : real;pDate : integer);
+  function ToString : string;
+  procedure
+
+  end;
+
+implementation
+
+end.

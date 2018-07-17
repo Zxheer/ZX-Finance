@@ -1,0 +1,690 @@
+object frmAdmin: TfrmAdmin
+  Left = 0
+  Top = 0
+  Caption = 'Admin'
+  ClientHeight = 741
+  ClientWidth = 1362
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  WindowState = wsMaximized
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object AdminUserPagecontrol: TPageControl
+    Left = 0
+    Top = 0
+    Width = 1362
+    Height = 741
+    ActivePage = IncomeStat
+    Align = alClient
+    TabOrder = 0
+    object IncomeStat: TTabSheet
+      Caption = 'Income Statement'
+      object lblgrossProfit: TLabel
+        Left = 112
+        Top = 167
+        Width = 109
+        Height = 22
+        Caption = 'Gross Profit'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblNetProfit: TLabel
+        Left = 112
+        Top = 604
+        Width = 87
+        Height = 22
+        Caption = 'Net Profit'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblOpInc: TLabel
+        Left = 112
+        Top = 195
+        Width = 221
+        Height = 22
+        Caption = 'Other Operating Income'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblOE: TLabel
+        Left = 112
+        Top = 279
+        Width = 180
+        Height = 22
+        Caption = 'OperatingExpenses'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblProfBeforeTax: TLabel
+        Left = 112
+        Top = 551
+        Width = 199
+        Height = 22
+        Caption = 'Profit Before Taxation'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblProfBeforeIntExp: TLabel
+        Left = 112
+        Top = 495
+        Width = 264
+        Height = 22
+        Caption = 'Profit Before Intrest Expense'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblProfBeforeIntInc: TLabel
+        Left = 112
+        Top = 439
+        Width = 253
+        Height = 22
+        Caption = 'Profit Before Intrest Income'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblGrossProf: TLabel
+        Left = 504
+        Top = 167
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblOpExp: TLabel
+        Left = 504
+        Top = 277
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblOtherOpInc: TLabel
+        Left = 504
+        Top = 195
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblOperatingProfit: TLabel
+        Left = 504
+        Top = 440
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblProfBeforeInExpAdd: TLabel
+        Left = 504
+        Top = 494
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object LblNetProfitAdd: TLabel
+        Left = 504
+        Top = 602
+        Width = 5
+        Height = 22
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblProfBeforeTaxADD: TLabel
+        Left = 504
+        Top = 548
+        Width = 5
+        Height = 21
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Arial Rounded MT Bold'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edtIntExp: TLabeledEdit
+        Left = 504
+        Top = 521
+        Width = 121
+        Height = 21
+        EditLabel.Width = 376
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Interest Expense_________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+      end
+      object edtIntIncome: TLabeledEdit
+        Left = 504
+        Top = 467
+        Width = 121
+        Height = 21
+        EditLabel.Width = 379
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Intrest Income___________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 1
+      end
+      object edtSales: TLabeledEdit
+        Left = 504
+        Top = 108
+        Width = 121
+        Height = 21
+        EditLabel.Width = 377
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Sales___________________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+      end
+      object edtCOS: TLabeledEdit
+        Left = 504
+        Top = 135
+        Width = 121
+        Height = 21
+        EditLabel.Width = 376
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Cost Of Sales____________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 3
+      end
+      object edtRent: TLabeledEdit
+        Left = 504
+        Top = 224
+        Width = 121
+        Height = 21
+        Color = clBtnHighlight
+        EditLabel.Width = 373
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Rent Income____________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 4
+      end
+      object edtComm: TLabeledEdit
+        Left = 504
+        Top = 251
+        Width = 121
+        Height = 21
+        EditLabel.Width = 373
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Comission Income (School Fees)____________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 5
+      end
+      object edtDep: TLabeledEdit
+        Left = 504
+        Top = 305
+        Width = 121
+        Height = 21
+        EditLabel.Width = 375
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Depreciation_____________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 6
+      end
+      object edtAudit: TLabeledEdit
+        Left = 504
+        Top = 332
+        Width = 121
+        Height = 21
+        EditLabel.Width = 372
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Audit Fees______________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 7
+      end
+      object edtSal: TLabeledEdit
+        Left = 504
+        Top = 359
+        Width = 121
+        Height = 21
+        EditLabel.Width = 376
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Salaries_________________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 8
+      end
+      object edtBadDebts: TLabeledEdit
+        Left = 504
+        Top = 386
+        Width = 121
+        Height = 21
+        EditLabel.Width = 372
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Bad Debts______________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 9
+      end
+      object edtBankChar: TLabeledEdit
+        Left = 504
+        Top = 413
+        Width = 121
+        Height = 21
+        EditLabel.Width = 378
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Bank Charges____________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 10
+      end
+      object lblTax: TLabeledEdit
+        Left = 504
+        Top = 575
+        Width = 121
+        Height = 21
+        EditLabel.Width = 377
+        EditLabel.Height = 18
+        EditLabel.BiDiMode = bdLeftToRight
+        EditLabel.Caption = 'Taxation________________________________________'
+        EditLabel.Font.Charset = DEFAULT_CHARSET
+        EditLabel.Font.Color = clWindowText
+        EditLabel.Font.Height = -15
+        EditLabel.Font.Name = 'Tahoma'
+        EditLabel.Font.Style = []
+        EditLabel.ParentBiDiMode = False
+        EditLabel.ParentFont = False
+        LabelPosition = lpLeft
+        TabOrder = 11
+      end
+      object Button1: TButton
+        Left = 320
+        Top = 640
+        Width = 75
+        Height = 25
+        Caption = 'Button1'
+        TabOrder = 12
+      end
+      object pnlAdd: TPanel
+        Left = 660
+        Top = 132
+        Width = 670
+        Height = 473
+        TabOrder = 13
+        Visible = False
+        object edtTotalLia: TLabeledEdit
+          Left = 104
+          Top = 80
+          Width = 121
+          Height = 21
+          EditLabel.Width = 69
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Total Liabilities'
+          TabOrder = 0
+          Text = 'R'
+        end
+        object edtCurrentLia: TLabeledEdit
+          Left = 105
+          Top = 307
+          Width = 121
+          Height = 21
+          EditLabel.Width = 80
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Current Liabilties'
+          TabOrder = 1
+          Text = 'R'
+        end
+        object edtTotalAss: TLabeledEdit
+          Left = 104
+          Top = 128
+          Width = 121
+          Height = 21
+          EditLabel.Width = 64
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Total Assests'
+          TabOrder = 2
+          Text = 'R'
+        end
+        object edtTS: TLabeledEdit
+          Left = 104
+          Top = 264
+          Width = 121
+          Height = 21
+          EditLabel.Width = 65
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Trading Stock'
+          TabOrder = 3
+          Text = 'R'
+        end
+        object edtDC: TLabeledEdit
+          Left = 104
+          Top = 219
+          Width = 121
+          Height = 21
+          EditLabel.Width = 76
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Debtors Control'
+          TabOrder = 4
+          Text = 'R'
+        end
+        object edtCC: TLabeledEdit
+          Left = 104
+          Top = 173
+          Width = 121
+          Height = 21
+          EditLabel.Width = 82
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Creditors Control'
+          TabOrder = 5
+          Text = 'R'
+        end
+        object edtCurrentAss: TLabeledEdit
+          Left = 104
+          Top = 352
+          Width = 121
+          Height = 21
+          EditLabel.Width = 72
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Current Assets'
+          TabOrder = 6
+          Text = 'R'
+        end
+      end
+      object btnAdd: TButton
+        Left = 880
+        Top = 640
+        Width = 91
+        Height = 25
+        Caption = 'Add a new year'
+        TabOrder = 14
+        OnClick = btnAddClick
+      end
+    end
+    object Ratios: TTabSheet
+      Caption = 'Ratios Calculator'
+      ImageIndex = 1
+      object stgRatio: TStringGrid
+        Left = 35
+        Top = 27
+        Width = 990
+        Height = 478
+        TabOrder = 0
+      end
+      object btnMax: TButton
+        Left = 1144
+        Top = 224
+        Width = 75
+        Height = 25
+        Caption = 'Maximum'
+        TabOrder = 1
+        OnClick = btnMaxClick
+      end
+      object btnMin: TButton
+        Left = 1144
+        Top = 352
+        Width = 75
+        Height = 25
+        Caption = 'Minimum'
+        TabOrder = 2
+        OnClick = btnMinClick
+      end
+      object btnSpefific: TButton
+        Left = 1112
+        Top = 456
+        Width = 139
+        Height = 49
+        Caption = 'Look for a specific ratio'
+        TabOrder = 3
+        OnClick = btnSpefificClick
+      end
+      object cmbSpecific: TComboBox
+        Left = 1080
+        Top = 470
+        Width = 201
+        Height = 21
+        TabOrder = 4
+        Text = 'Select a ratio'
+        Visible = False
+        OnChange = cmbSpecificChange
+        Items.Strings = (
+          'Gross profit as a percentage on sales'
+          'Profit mark-up percentage'
+          'Net Profit before tax as a percentage on sales'
+          'Operating expenses as a percentage on sales'
+          'Operating profit as a percentage on sales'
+          'Operating profit as a percentage on cost of sales'
+          'Average debtors collection period in days'
+          'Average creditors payment period in days'
+          'Rate of stock turnover in times'
+          'Solvency Ratio : 1'
+          'Acid-Test ratio : 1'
+          'Current Ratio : 1'
+          'Net Working Capital in Rands')
+      end
+      object cmbYear: TComboBox
+        Left = 1136
+        Top = 470
+        Width = 97
+        Height = 21
+        TabOrder = 5
+        Text = 'Select a year'
+        Visible = False
+        OnChange = cmbYearChange
+      end
+    end
+    object Income: TTabSheet
+      Caption = 'Income'
+      ImageIndex = 2
+      object DBGrid1: TDBGrid
+        Left = 344
+        Top = 56
+        Width = 369
+        Height = 457
+        DataSource = DmFinaces.dsrInc
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+      object DBNavigator1: TDBNavigator
+        Left = 416
+        Top = 3
+        Width = 208
+        Height = 25
+        DataSource = DmFinaces.dsrInc
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+        TabOrder = 1
+      end
+    end
+    object Expenses: TTabSheet
+      Caption = 'Expenses'
+      ImageIndex = 3
+      object DBGrid2: TDBGrid
+        Left = 184
+        Top = 32
+        Width = 745
+        Height = 441
+        DataSource = DmFinaces.dsrExp
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+      object DBNavigator2: TDBNavigator
+        Left = 416
+        Top = 1
+        Width = 224
+        Height = 25
+        DataSource = DmFinaces.dsrExp
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+        TabOrder = 1
+      end
+    end
+    object YearEnd: TTabSheet
+      Caption = 'Year End Totals'
+      ImageIndex = 5
+      object DBGrid3: TDBGrid
+        Left = 168
+        Top = 59
+        Width = 745
+        Height = 422
+        DataSource = DmFinaces.dsrYearEnd
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+      end
+      object DBNavigator3: TDBNavigator
+        Left = 456
+        Top = 28
+        Width = 224
+        Height = 25
+        DataSource = DmFinaces.dsrYearEnd
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+        TabOrder = 1
+      end
+    end
+    object Settings: TTabSheet
+      Caption = 'Settings'
+      ImageIndex = 4
+    end
+  end
+end

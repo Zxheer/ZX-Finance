@@ -1,0 +1,20 @@
+unit Ratios_u;
+
+interface
+uses
+  sysutils,dateutils,math,dialogs;
+
+type
+  TRatios = class(TObject)
+  private
+
+
+  public
+
+
+
+  end;
+
+implementation
+
+end.

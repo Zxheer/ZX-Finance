@@ -1,0 +1,1205 @@
+unit frmUser_u;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ComCtrls, ExtCtrls, dmFinaces_u, Ratios_u, Grids,
+  DBGrids, DBCtrls;
+
+const
+  AdminCode = '0000';
+
+type
+  TfrmAdmin = class(TForm)
+    AdminUserPagecontrol: TPageControl;
+    IncomeStat: TTabSheet;
+    Ratios: TTabSheet;
+    Income: TTabSheet;
+    Expenses: TTabSheet;
+    Settings: TTabSheet;
+    edtIntExp: TLabeledEdit;
+    edtIntIncome: TLabeledEdit;
+    edtSales: TLabeledEdit;
+    edtCOS: TLabeledEdit;
+    edtRent: TLabeledEdit;
+    edtComm: TLabeledEdit;
+    edtDep: TLabeledEdit;
+    edtAudit: TLabeledEdit;
+    edtSal: TLabeledEdit;
+    edtBadDebts: TLabeledEdit;
+    edtBankChar: TLabeledEdit;
+    lblTax: TLabeledEdit;
+    lblgrossProfit: TLabel;
+    lblNetProfit: TLabel;
+    lblOpInc: TLabel;
+    lblOE: TLabel;
+    lblProfBeforeTax: TLabel;
+    lblProfBeforeIntExp: TLabel;
+    lblProfBeforeIntInc: TLabel;
+    lblGrossProf: TLabel;
+    lblOpExp: TLabel;
+    lblOtherOpInc: TLabel;
+    lblOperatingProfit: TLabel;
+    lblProfBeforeInExpAdd: TLabel;
+    LblNetProfitAdd: TLabel;
+    btnADDBegin: TButton;
+    DBGrid1: TDBGrid;
+    YearEnd: TTabSheet;
+    DBGrid2: TDBGrid;
+    DBGrid3: TDBGrid;
+    DBNavigator1: TDBNavigator;
+    DBNavigator2: TDBNavigator;
+    DBNavigator3: TDBNavigator;
+    stgRatio: TStringGrid;
+    btnMax: TButton;
+    btnMin: TButton;
+    btnSpefific: TButton;
+    cmbSpecific: TComboBox;
+    cmbYear: TComboBox;
+    pnlAdd: TPanel;
+    edtTotalLia: TLabeledEdit;
+    edtCurrentLia: TLabeledEdit;
+    edtTotalAss: TLabeledEdit;
+    edtTS: TLabeledEdit;
+    edtDC: TLabeledEdit;
+    edtCC: TLabeledEdit;
+    edtCurrentAss: TLabeledEdit;
+    lblProfBeforeTaxADD: TLabel;
+    btnAdd: TButton;
+    procedure FormActivate(Sender: TObject);
+    procedure but(Sender: TObject; var Action: TCloseAction);
+    procedure AverageClick(Sender: TObject);
+    procedure btnMaxClick(Sender: TObject);
+    procedure btnMinClick(Sender: TObject);
+    procedure btnSpefificClick(Sender: TObject);
+    procedure cmbSpecificChange(Sender: TObject);
+    procedure cmbYearChange(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
+    procedure btnADDBeginClick(Sender: TObject);                            //Dynamically Created line 444
+
+  private
+  Average : TButton;  //line 444
+  RatioAndDatabase : TRatio;                 //Adds ratios and inputs into database
+  procedure ReadFromFile;  //Read the text file called UsernamesAndPasswords storing users information
+  procedure CreateAccount; //to create Finances account
+  procedure Welcome;
+  function Encryption(s : string) : string;
+  function Decryption(s : string) : string;
+  Function Validate(p : string) : boolean;
+
+
+
+  var
+  icountArray, iCountR, iSpecificCol, iSpecificYear : integer;
+  s, sUser : string;    //s = the username of the user this can be seen when closing the program
+  arrUser, arrPass : array[1..10000000] of string;  //For the username and password
+    { Private declarations }
+
+  public
+  ar2Ratio : array[1..1000,1..13] of string;
+  arrRatios : array[1..14] of string;
+    { Public declarations }
+  end;
+
+var
+  frmAdmin: TfrmAdmin;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmAdmin.AverageClick(Sender: TObject);
+var
+  icol, itotal: Integer;
+  iRow: Integer;
+  rAve, rTotal: real;
+begin
+  stgRatio.RowCount := iCountr+2;
+  stgRatio.Cells[0,iCountr+1] := 'Average';
+
+  for icol := 1 to 6 do
+    begin
+      iTotal := 0;
+      for iRow := 1 to iCountR do
+        iTotal := iTotal + strtoint(ar2Ratio[iRow,icol]);
+      rAve := itotal / iCountR;
+      stgRatio.Cells[icol,iCountR+1]  := floattostrf(rAve,ffFixed,10,2) + '%';
+    end;
+
+  for icol := 7 to 8 do
+    begin
+      iTotal := 0;
+      for iRow := 1 to iCountR do
+        iTotal := iTotal + strtoint(ar2Ratio[iRow,icol]);
+      rAve := itotal / iCountR;
+      stgRatio.Cells[icol,iCountR+1]  := floattostrf(rAve,ffFixed,10,2) + ' Days';
+    end;
+
+      iTotal := 0;
+      for iRow := 1 to iCountR do
+        iTotal := iTotal + strtoint(ar2Ratio[iRow,9]);
+      rAve := itotal / iCountR;
+      stgRatio.Cells[9,iCountR+1]  := floattostrf(rAve,ffFixed,10,2) + ' times';
+
+    for icol := 10 to 12 do
+    begin
+      rTotal := 0;
+      for iRow := 1 to iCountR do
+        rTotal := rTotal + strtofloat(ar2Ratio[iRow,icol]);
+      rAve := rtotal / iCountR;
+      stgRatio.Cells[icol,iCountR+1]  := floattostrf(rAve,ffFixed,10,2) + ' : 1';
+    end;
+
+      rTotal := 0;
+      for iRow := 1 to iCountR do
+        rTotal := rTotal + strtofloat(ar2Ratio[iRow,13]);
+      rAve := rtotal / iCountR;
+      stgRatio.Cells[13,iCountR+1]  := 'R' + floattostrf(rAve,ffFixed,10,2);
+
+end;
+
+procedure TfrmAdmin.CreateAccount;
+var
+  sPass,sCode : string;
+  bValid : boolean;
+  tFile : textfile;
+  k: Integer;
+begin
+{sCode := inputbox('Admin Verification','Please key in the Admin Code (0000)','');
+if sCode <> AdminCode then
+  begin
+    showmessage('"'+sCode+'" is not the correct code!');
+  end; }
+
+  repeat
+    begin
+      bValid := true;
+      sUser := inputBox('Create new account','Please enter a username.','');          //Creats an account
+      for k := 1 to iCountArray do                                                    //adhearing to specifications.
+        if sUser = arrUser[k] then
+          begin
+            messageDlg('The username '+sUser+' is taken, please try again.',mtError,[mbok],0);        //cheacking if username exists
+            bValid := false;
+          end;
+
+      if length(sUser) = 0  then
+        begin
+          bValid := false;
+          messageDlg('Your username cannot be left empty!',mtError,[mbok],0);
+        end;
+
+      for k := 1 to length(sUser) do
+        begin
+          if bValid then
+            if not(upcase(sUser[k]) IN ['A'..'Z']) then
+            begin
+              messageDlg('The character '+sUser[k]+' is not allowed in your username, please stick to letters.',mtError,[mbok],0);
+              bValid := false;
+            end;
+        end;
+    end;
+  until bValid = true;
+
+    bValid := false;
+
+    repeat
+    begin
+      sPass := inputBox('Create new account','Please enter a password.','');       //Checking password according
+      if (length(sPass) < 8) then                                                  //to the set rules
+        messageDlg('Password must be 8 characters or longer!',mtError,[mbok],0)                    // x => 8 and x[1]and x[last]
+      else                                                                         //are both capital letters
+        if (sPass[1] IN ['A'..'Z']) and (sPass[Length(sPass)] IN ['A'..'Z'])  then
+           bValid := true
+        else
+          messageDlg('Password must start and end with a capital letter!',mtError,[mbok],0);
+      if length(sPass) = 0  then
+        begin
+          bValid := false;
+          messageDlg('Your Password cannot be left empty!',mtError,[mbok],0);
+        end;
+      for k := 1 to length(sPass) do
+        begin
+          if bValid then
+            if not(upcase(sPass[k]) IN ['A'..'Z']) then
+            begin
+              messageDlg('The character "'+sPass[k]+'" is not allowed in your username, please stick to letters.',mtError,[mbok],0);
+              bValid := false;
+            end;
+        end;
+    end;
+    until bValid = true ;
+
+    sPass := encryption(sPass);
+
+    assignFile(tFile,'UsernameAndPassword.txt');          //Adding new username and password
+    append(tFile);                                        // to the text file
+    writeln(tFile,sUser,' ',sPass);
+    closeFile(tFile);
+    inc(iCOuntArray);
+    arrUser[iCountArray] := sUser;
+    arrPass[iCountArray] := sPass;
+
+
+end;
+
+function TfrmAdmin.Decryption(s: string): string;
+var
+  k : integer;
+begin
+result := '';
+  for k := 1 to length(s) do
+        case s[k] of
+        '!' :  result := result+'a';
+        ':' : result := result+'b';
+        ';' : result := result+'c';
+        '{' : result := result+'d';
+        '#' : result := result+'e';
+        '"' : result := result+'f';
+        '>' : result := result +'g';
+        '<' : result := result+'h';
+        '$' : result := result+'i';
+        '.' : result := result +'j';
+        ',' : result := result+'k';
+        '?' : result := result+'l';
+        'a' : result := result+'m';
+        '}' : result := result+'n';
+        '%' : result := result+'o';
+        'b' : result := result+'p';
+        'c' : result := result+'q';
+        'd' : result := result+'r';
+        'e' : result := result+'s';
+        'f' : result := result+'t';
+        '^' : result := result+'u';
+        'g' : result := result+'v';
+        'h' : result := result+'w';
+        'i' : result := result+'x';
+        'j' : result := result+'y';
+        'k' : result := result+'z';
+        'l' : result := result+'Z';
+        '&' : result := result+'A';
+        'm' : result := result+'B';
+        'n' : result := result+'C';
+        ']' : result := result+'D';
+        'o' : result := result+'F';
+        '*' : result := result+'E';
+        'p' : result := result+'G';
+        'q' : result := result+'H';
+        '(' : result := result+'I';
+        'r' : result := result+'L';
+        's' : result := result+'J';
+        't' : result := result+'K';
+        'u' : result := result+'M';
+        '[' : result := result+'N';
+        ')' : result := result+'O';
+        'v' : result := result+'P';
+        'w' : result := result+'Q';
+        'x' : result := result+'R';
+        'y' : result := result+'S';
+        'z' : result := result+'T';
+        '=' : result := result+'U';
+        'A' : result := result+'W';
+        'C' : result := result+'V';
+        'B' : result := result+'X';
+        'D' : result := result+'Y';
+        'E' : result := result+'0';
+        'F' : result := result+'1';
+        'G' : result := result+'2';
+        'H' : result := result+'3';
+        'I' : result := result+'4';
+        'K' : result := result+'5';
+        'J' : result := result + '6';
+        'L' : result := result + '7';
+        'M' : result := result + '8' ;
+        'N' : result := result + '9' ;
+          end;
+end;
+
+function TfrmAdmin.Encryption(s: string): string;
+var
+k : integer;
+begin
+result := '';
+  for k := 1 to length(S) do
+    case S[k] of
+    'a' : result := result + '!';
+    'b' : result :=result + ':';
+    'c' : result :=result + ';';
+    'd' : result :=result + '{';
+    'e' : result :=result + '#';
+    'f' : result :=result + '"';
+    'g' : result :=result + '>';
+    'h' : result :=result + '<';
+    'i' : result :=result + '$';
+    'j' : result :=result + '.';
+    'k' : result :=result + ',';
+    'l' : result :=result + '?';
+    'm' : result :=result + 'a';
+    'n' : result :=result + '}';
+    'o' : result :=result + '%';
+    'p' : result :=result + 'b';
+    'q' : result := result +'c';
+    'r' : result := result +'d';
+    's' : result := result +'e';
+    't' : result := result +'f';
+    'u' : result := result +'^';
+    'v' : result := result +'g';
+    'w' : result := result +'h';
+    'x' : result := result +'i';
+    'y' : result := result +'j';
+    'z' : result := result +'k';
+    'Z' : result :=result + 'l';
+    'A' : result :=result + '&';
+    'B' : result := result +'m';
+    'C' : result :=result + 'n';
+    'D' : result := result +']';
+    'F' : result := result +'o';
+    'E' : result :=result + '*';
+    'G' : result :=result + 'p';
+    'H' : result :=result + 'q';
+    'I' : result :=result + '(';
+    'L' : result := result +'r';
+    'J' : result := result +'s';
+    'K' : result := result +'t';
+    'M' : result :=result + 'u';
+    'N' : result := result +'[';
+    'O' : result := result +')';
+    'P' : result := result +'v';
+    'Q' : result := result +'w';
+    'R' : result := result +'x';
+    'S' : result := result +'y';
+    'T' : result := result +'z';
+    'U' : result :=result + '=';
+    'W' : result := result +'A';
+    'V' : result := result +'C';
+    'X' : result := result +'B';
+    'Y' : result := result +'D';
+    '0' : result := result +'E';
+    '1' : result := result +'F';
+    '2' : result :=result + 'G';
+    '3' : result :=result + 'H';
+    '4' : result :=result + 'I';
+    '5' : result :=result + 'K';
+    '6' : result :=result + 'J';
+    '7' : result :=result + 'L';
+    '8' : result := result +'M';
+    '9' : result := result +'N';
+      end;
+end;
+
+procedure TfrmAdmin.FormActivate(Sender: TObject);
+var
+  k, iCountPass, iPos,iCount : integer;
+  sPass,sline : string;
+  bFound, bValid : boolean;
+  Tfile : textfile;
+  iRow, iCol: Integer;
+  arrYear : array[1..1000] of string;
+begin
+AdminUserPageControl.ActivePageIndex := 0;
+bFound := false;
+  ReadFromFile;                 //Text file with usernames and passwords
+
+   if messageDlg('Welcome to Zaheer Finances. Do you have an account for Zaheer Finaces?',mtConfirmation,[mbYes,mbNo],0) = mrYes then   //Asking if they have an account
+     begin
+       sUser := inputbox('Login','Please enter your username.','');
+       for k := 1 to iCountArray do
+           if sUser = arrUser[k] then
+            begin                              //Checking if username exists
+              bFound := true;
+              iPos := k;
+            end;
+       if bFound = False then
+         begin
+          Showmessage('It seems you do not have an active account, please create a new one.');
+          CreateAccount;        //Procedure to create an account
+         end
+       else
+        if bFound = true then
+          begin
+          bValid := False;
+          iCountPass := 0;
+            repeat
+              begin
+                sPass := inputBox('Login','Please enter your password.','');         //checking if password corresponds
+                if Not(sPass = arrPass[iPos]) then
+                  begin
+                    showmessage('The password entered, '+sPass+' is incorrect!'+' You have '+IntToStr(4-iCountPass)+' more times to try!');   //if entered wrong the user has 4 more chances before the user has to create a new account, security reasons.
+                    inc(iCountPass);               //Only give them 5 trys before they have to set a new password
+                  end
+                else
+                  bValid := True;
+              end;
+            until (bValid = true) or (iCountPass = 5);
+            if iCountPass = 5 then
+              begin
+                Showmessage('You have entered the incorrect password 5 times, please create a new account.');
+                createAccount;                    //if entered incorectly 5 times must create new account
+          end;
+     end
+     end
+   else
+    CreateAccount;           //if they dont have a account create one
+
+  welcome;
+
+if fileExists('RatioNames.txt') <> true then
+  begin
+    messagedlg('File does not exist',mtError,[mbok],0);
+    exit;
+  end;
+
+  assignfile(tFile,'RatioNames.txt') ;
+  reset(tFile);
+  iCount := 0;
+
+  while not eof(tFile) AND (iCount<1000) do
+    begin
+      readln(tFile,sLine);
+      inc(iCount);
+      arrratios[iCount] := sline;
+    end;
+closefile(tFile);
+
+if fileExists('Ratios.txt') <> true then
+  begin
+    messagedlg('File does not exist',mtError,[mbok],0);
+    exit;
+  end;
+
+  assignfile(tFile,'Ratios.txt') ;
+  reset(tFile);
+  iCountR := 0;
+
+  while not eof(tFile) AND (iCountR<1000) do
+    begin
+      readln(tFile,sLine);
+      inc(iCountR);
+
+      iPos:= pos('/',sline);
+      arrYear[iCountR] := copy(sline,1,ipos-1);
+      delete(sline,1,ipos);
+
+      for iCol := 1 to 12 do
+        begin
+          iPos := pos('-',sline);
+          ar2Ratio[iCountR,iCol] := copy(sline,1,iPos-1);
+          delete(sline,1,iPos);
+        end;
+      ar2Ratio[iCountR,13]  := sline;
+    end;
+closefile(tFile);
+
+
+stgRatio.RowCount := iCountR + 1;
+stgratio.ColCount := 15;
+stgRatio.Cells[0,0] := 'Year';
+
+for k := 1 to iCount do
+  stgRatio.cells[0,k] := arrYear[k];
+
+for iCol := 1 to 13 do
+begin
+  stgRatio.Cells[iCol,0] := arrRatios[iCol];
+  stgratio.ColWidths[icol] := 250;
+end;
+
+for iRow := 1 to iCountR do
+  for icol := 1 to 13 do
+    stgRatio.Cells[iCol,iRow] := ar2Ratio[iRow,iCol];
+
+
+Average := TButton.Create(ratios);
+Average.Parent := ratios;
+Average.OnClick := AverageClick;
+Average.Top := 96;
+Average.Left := 1144;
+Average.Width := 75;
+Average.Caption := 'Average';
+Average.Visible := true;
+
+end;
+
+procedure TfrmAdmin.btnADDBeginClick(Sender: TObject);
+begin
+  btnAddbegin.Visible := false;
+  btnAdd.Visible := true;
+  frmadmin.width := 1378;
+  pnlAdd.Visible := true;
+end;
+
+procedure TfrmAdmin.btnAddClick(Sender: TObject);
+var
+iDate, choice :integer;
+begin
+ if edtSales.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for sales is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for Sales',mtInformation,[mbok],0);
+      edtSales.Color := clRed;
+      exit;
+    end
+   else
+    edtsales.Text := '0';
+ end
+ else
+   if Validate(edtSales.Text) = false then
+    begin
+      edtSales.Color := clRed;
+      messagedlg('The amount entered for sales is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtSales.Color := clWhite;
+
+    if edtCOS.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for Cost of sales is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for Cost of Sales',mtInformation,[mbok],0);
+      edtCOS.Color := clRed;
+      exit;
+    end
+    else
+      edtcos.Text := '0';
+ end
+ else
+   if Validate(edtCOS.Text) = false then
+    begin
+      edtCOS.Color := clRed;
+      messagedlg('The amount entered for Cost of sales is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtCOS.Color := clWhite;
+
+  if edtRent.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for rent is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for rent',mtInformation,[mbok],0);
+      edtRent.Color := clRed;
+      exit;
+    end
+    else
+      edtrent.Text := '0';
+ end
+ else
+   if Validate(edtRent.Text) = false then
+    begin
+      edtRent.Color := clRed;
+      messagedlg('The amount entered for rent is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtRent.Color := clWhite;
+
+ if edtComm.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for commission income is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for commission income',mtInformation,[mbok],0);
+      edtComm.Color := clRed;
+      exit;
+    end
+    else
+      edtcomm.Text := '0';
+ end
+ else
+   if Validate(edtComm.Text) = false then
+    begin
+      edtComm.Color := clRed;
+      messagedlg('The amount entered for commission income is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtComm.Color := clWhite;
+
+if edtDep.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for depreciation is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for depreciation',mtInformation,[mbok],0);
+      edtDep.Color := clRed;
+      exit;
+    end
+    else
+      edtdep.Text := '0';
+ end
+ else
+   if Validate(edtDep.Text) = false then
+    begin
+      edtDep.Color := clRed;
+      messagedlg('The amount entered for depreciation is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtDep.Color := clWhite;
+
+if edtAudit.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for audit fees is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for audit fees',mtInformation,[mbok],0);
+      edtAudit.Color := clRed;
+      exit;
+    end
+    else
+     edtaudit.Text := '0';
+ end
+ else
+   if Validate(edtAudit.Text) = false then
+    begin
+      edtAudit.Color := clRed;
+      messagedlg('The amount entered for audit fees is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtAudit.Color := clWhite;
+
+if edtSal.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for salaries is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for salaries',mtInformation,[mbok],0);
+      edtSal.Color := clRed;
+      exit;
+    end
+    else
+      edtsal.Text := '0';
+ end
+ else
+   if Validate(edtSal.Text) = false then
+    begin
+      edtSal.Color := clRed;
+      messagedlg('The amount entered for salaries is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtSal.Color := clWhite;
+
+if edtBadDebts.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for bad debts is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for bad debts',mtInformation,[mbok],0);
+      edtBadDebts.Color := clRed;
+      exit;
+    end
+    else
+      edtBaddebts.Text := '0';
+ end
+ else
+   if Validate(edtBadDebts.Text) = false then
+    begin
+      edtBadDebts.Color := clRed;
+      messagedlg('The amount entered for bad debts is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtBadDebts.Color := clWhite;
+
+if edtBankChar.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for bank charges is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for bank charges',mtInformation,[mbok],0);
+      edtBankChar.Color := clRed;
+      exit;
+    end
+    else
+      edtbankcHAR.Text := '0';
+ end
+ else
+   if Validate(edtBankChar.Text) = false then
+    begin
+      edtBankChar.Color := clRed;
+      messagedlg('The amount entered for bank charges is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtBankChar.Color := clWhite;
+
+if edtIntIncome.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for Interest Income is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for Interest Income',mtInformation,[mbok],0);
+      edtIntIncome.Color := clRed;
+      exit;
+    end
+    else
+      edtIntIncome.Text := '0';
+ end
+ else
+   if Validate(edtIntIncome.Text) = false then
+    begin
+      edtIntIncome.Color := clRed;
+      messagedlg('The amount entered for Interest Income is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtIntIncome.Color := clWhite;
+
+if edtintexp.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for interest expense is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for interest expense',mtInformation,[mbok],0);
+      edtintexp.Color := clRed;
+      exit;
+    end
+    else
+      edtIntexp.Text := '0';
+ end
+ else
+   if Validate(edtintexp.Text) = false then
+    begin
+      edtintexp.Color := clRed;
+      messagedlg('The amount entered for interest expense is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtintexp.Color := clWhite;
+
+if edtTotalLia.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for total liabilties is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for total liabilties',mtInformation,[mbok],0);
+      edtTotalLia.Color := clRed;
+      exit;
+    end
+    else
+      edtTotalLia.Text := '0';
+ end
+ else
+   if Validate(edtTotalLia.Text) = false then
+    begin
+      edtTotalLia.Color := clRed;
+      messagedlg('The amount entered for total liabilties is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtTotalLia.Color := clWhite;
+
+if edtTotalAss.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for total assets is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for total assets',mtInformation,[mbok],0);
+      edtTotalAss.Color := clRed;
+      exit;
+    end
+    else
+      edtTotalAss.Text := '0';
+ end
+ else
+   if Validate(edtTotalAss.Text) = false then
+    begin
+      edtTotalAss.Color := clRed;
+      messagedlg('The amount entered for total assets is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtTotalAss.Color := clWhite;
+
+if edtcc.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for creditors control is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for creditors control',mtInformation,[mbok],0);
+      edtcc.Color := clRed;
+      exit;
+    end
+    else
+      edtcc.Text := '0';
+ end
+ else
+   if Validate(edtcc.Text) = false then
+    begin
+      edtcc.Color := clRed;
+      messagedlg('The amount entered for creditors control is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtcc.Color := clWhite;
+
+if edtDC.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for debtors control is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for debtors control',mtInformation,[mbok],0);
+      edtDC.Color := clRed;
+      exit;
+    end
+    else
+      edtdc.Text := '0';
+ end
+ else
+   if Validate(edtDC.Text) = false then
+    begin
+      edtDC.Color := clRed;
+      messagedlg('The amount entered for debtors control is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtDC.Color := clWhite;
+
+if edtTS.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for trading stock is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for trading stock',mtInformation,[mbok],0);
+      edtTS.Color := clRed;
+      exit;
+    end
+    else
+      edtts.Text := '0';
+ end
+ else
+   if Validate(edtTS.Text) = false then
+    begin
+      edtTS.Color := clRed;
+      messagedlg('The amount entered for trading stock is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtTS.Color := clWhite;
+
+if edtCurrentlia.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for Current liabilties is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for Current liabilties',mtInformation,[mbok],0);
+      edtCurrentlia.Color := clRed;
+      exit;
+    end
+    else
+      edtCurrentLia.Text := '0';
+ end
+ else
+   if Validate(edtCurrentlia.Text) = false then
+    begin
+      edtCurrentlia.Color := clRed;
+      messagedlg('The amount entered for Current liabilties is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtCurrentlia.Color := clWhite;
+
+ if edtCurrentass.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for Current assets is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for Current assets',mtInformation,[mbok],0);
+      edtCurrentass.Color := clRed;
+      exit;
+    end
+    else
+      edtCurrentass.Text := '0';
+ end
+ else
+   if Validate(edtCurrentass.Text) = false then
+    begin
+      edtCurrentass.Color := clRed;
+      messagedlg('The amount entered for Current assets is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      edtCurrentass.Color := clWhite;
+
+ if lblTax.Text = '' then
+ begin
+   Choice := messagedlg('The amount entered for taxation is empty, would you like make it R0?',mtCustom,[mbok,mbno],0);
+   if Choice = mrNo then
+    begin
+      MessageDlg('Please enter an amount for taxation',mtInformation,[mbok],0);
+      lblTax.Color := clRed;
+      exit;
+    end
+    else
+      lblTax.Text := '0';
+ end
+ else
+   if Validate(lblTax.Text) = false then
+    begin
+      lblTax.Color := clRed;
+      messagedlg('The amount entered for taxation is not valid!',mtError,[mbok],0);
+      exit;
+    end
+    else
+      lblTax.Color := clWhite;
+
+  lblGrossProf.Caption := floatTostrF((StrTOfloat(edtsales.Text) - strtofloat(edtCOS.text)),fffixed,10,2);
+  lblOtheropInc.Caption := floatTostrF((StrTOfloat(edtrent.Text) + strtofloat(edtcomm.text)),fffixed,10,2);
+  lblOpexp.Caption := floatTostrF((StrTOfloat(edtdep.Text) + strtofloat(edtAudit.text) + StrTOfloat(edtSal.Text) + strtofloat(edtBadDebts.text) + strtofloat(edtBankChar.text)),fffixed,10,2);
+  lblOperatingProfit.Caption := floatTostrF((StrTOfloat(lblGrossProf.Caption) + strtofloat(lblOtheropInc.Caption) - strtofloat(lblOpexp.Caption)),fffixed,10,2);
+  lblProfBeforeInExpADD.Caption := floatTostrF((StrTOfloat(lblOperatingProfit.Caption) + strtofloat(edtIntIncome.text)),fffixed,10,2);
+  lblProfBeforeTaxADD.Caption := floatTostrF((StrTOfloat(lblProfBeforeInExpADD.Caption) - strtofloat(edtIntexp.text)),fffixed,10,2);
+  lblNetProfitAdd.Caption := floatTostrF((StrTOfloat(lblProfBeforeTaxADD.caption) - strtofloat(lbltax.text)),fffixed,10,2);
+  RatioAndDatabase := TRatio.Create(lblNetProfitAdd.caption,lblTax.text,lblOtherOpInc.caption,lblOpExp.caption,lblGrossProfit.caption,lblProfBeforeInExpAdd.caption,lblProfBeforeTaxAdd.caption,lblOperatingProfit.caption,edtSales.Text,edtCOS.Text,edtRent.Text,edtComm.Text,edtDep.Text,edtAudit.Text,edtSal.Text,edtBadDebts.Text,edtBankchar.Text,edtIntincome.Text,edtIntexp.Text,edtTotalLia.Text,edtTotalAss.Text,edtCC.Text,edtDC.Text,edtTS.Text,edtCurrentLia.Text,edtCurrentAss.Text,iDate);
+end;
+
+procedure TfrmAdmin.btnMaxClick(Sender: TObject);
+var
+  iCol, iRow, iLarge, iYear : integer;
+  sYear : string;
+  rLarge : real;
+begin
+stgRatio.RowCount := iCountr+2;
+  stgRatio.Cells[0,iCountr+1] := 'Maximum';
+
+  for icol := 1 to 6 do
+    begin
+      iLarge := strtoint(ar2Ratio[1,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) > iLarge then
+          begin
+            iLarge := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := inttostr(ilarge) + '% ' + '('+syear+')';
+    end;
+
+  for icol := 7 to 8 do
+    begin
+      iLarge := strtoint(ar2Ratio[7,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) > iLarge then
+          begin
+            iLarge := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := inttostr(ilarge) + ' Days ' + '('+syear+')';
+    end;
+
+    iLarge := strtoint(ar2Ratio[9,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) > iLarge then
+          begin
+            iLarge := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[9,iCountR+1]  := inttostr(ilarge) + ' Times ' + '('+syear+')';
+
+    for icol := 10 to 12 do
+    begin
+      rLarge := strtoFloat(ar2Ratio[10,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoFloat(ar2Ratio[iRow,iCol]) > rLarge then
+          begin
+            rLarge := strtoFloat(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := floattostrf(rLarge,fffixed,10,2) + ' : 1 ' + '('+syear+')';
+    end;
+
+    rLarge := strtoFloat(ar2Ratio[9,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoFloat(ar2Ratio[iRow,iCol]) > rLarge then
+          begin
+            rLarge := strtoFloat(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[13,iCountR+1]  := 'R' + floattostrf(rLarge,fffixed,10,2)  + ' ('+syear+')';
+end;
+
+procedure TfrmAdmin.btnMinClick(Sender: TObject);
+var
+  iCol, iRow, iSmall, iYear : integer;
+  sYear : string;
+  rSmall : real;
+begin
+stgRatio.RowCount := iCountr+2;
+  stgRatio.Cells[0,iCountr+1] := 'Maximum';
+
+  for icol := 1 to 6 do
+    begin
+      iSmall := strtoint(ar2Ratio[1,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) < iSmall then
+          begin
+            iSmall := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := inttostr(iSmall) + '% ' + '('+syear+')';
+    end;
+
+  for icol := 7 to 8 do
+    begin
+      iSmall := strtoint(ar2Ratio[7,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) < iSmall then
+          begin
+            iSmall := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := inttostr(iSmall) + ' Days ' + '('+syear+')';
+    end;
+
+    iSmall := strtoint(ar2Ratio[9,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoint(ar2Ratio[iRow,iCol]) < iSmall then
+          begin
+            iSmall := strtoint(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[9,iCountR+1]  := inttostr(iSmall) + ' Times ' + '('+syear+')';
+
+    for icol := 10 to 12 do
+    begin
+      rSmall := strtoFloat(ar2Ratio[10,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoFloat(ar2Ratio[iRow,iCol]) < rSmall then
+          begin
+            rSmall := strtoFloat(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[icol,iCountR+1]  := floattostrf(rSmall,fffixed,10,2) + ' : 1 ' + '('+syear+')';
+    end;
+
+    rSmall := strtoFloat(ar2Ratio[9,iCol]);
+      sYear := '2003';
+      for iRow := 2 to iCountR do
+        if strtoFloat(ar2Ratio[iRow,iCol]) < rSmall then
+          begin
+            rSmall := strtoFloat(ar2Ratio[irow,icol]);
+            iYear := 2002 + irow;
+            sYear := inttostr(iYear);
+          end;
+      stgRatio.Cells[13,iCountR+1]  := 'R' + floattostrf(rSmall,fffixed,10,2)  + ' ('+syear+')';
+
+end;
+
+procedure TfrmAdmin.btnSpefificClick(Sender: TObject);
+begin
+  btnSpefific.Visible := false;
+  cmbSpecific.visible := true;
+end;
+
+procedure TfrmAdmin.but(Sender: TObject; var Action: TCloseAction);
+begin
+application.Terminate;
+average.Free;
+end;
+
+procedure TfrmAdmin.cmbSpecificChange(Sender: TObject);
+var
+  k, iYear: Integer;
+begin
+  iSpecificCol := cmbspecific.ItemIndex + 2;
+  cmbSpecific.Visible := false;
+  for k := 1 to iCountR do
+  begin
+    iYear := 2002 + k;
+    cmbYear.Items.Add(inttostr(iyear));
+  end;
+
+  cmbYear.Visible := true;
+
+end;
+
+procedure TfrmAdmin.cmbYearChange(Sender: TObject);
+begin
+  iSpecificYear := cmbyear.ItemIndex + 1 + 2002;
+  cmbYear.Visible := false;
+
+  showmessage('The '+cmbspecific.Items[cmbspecific.ItemIndex]+ ' of the year ' + inttostr(iSpecificYear) + ' was ' + stgRatio.Cells[iSpecificCol-1,cmbYear.ItemIndex+1]);
+  btnSpefific.visible := true;
+end;
+
+procedure TfrmAdmin.ReadFromFile;
+var
+  tFile : TextFile;
+  sLine,sNew : string;
+  iPos,k : integer;
+begin
+
+  if fileExists('UsernameAndPassword.txt') <> true then            //Importing from text file
+    begin
+      Messagedlg('File does not exist',mtError,[mbok],0);
+      Application.Terminate;
+    end;
+
+  iCountArray := 0;
+  AssignFile(tFile,'UsernameAndPassword.txt');
+  Reset(tFile);
+
+  while not eof(tFile) do
+    begin
+      Readln(tFile,sLine);
+      inc(iCountArray);
+
+      iPos := pos(' ',sLine);
+      arrUser[iCountArray] := copy(sLine,1,iPos-1);
+      delete(sLine,1,iPos);
+      arrPass[iCountArray] := Decryption(sLine);
+ end;
+
+  closeFile(tFile);
+
+end;
+
+Function TfrmAdmin.Validate(p: string) : boolean;
+var
+int : integer;
+begin
+result := false;
+  trim(p);
+  if UPCASE(p[1]) = 'R' then
+  begin
+    p[1] := ' ';
+    trim(p);
+  end;
+
+  if tryStrToint(p,int) = false then
+    result := false
+  else
+    result := true;
+end;
+
+procedure TfrmAdmin.Welcome;
+begin
+  Showmessage('Sucessful Login! Welcome '+sUser+'!');
+  Showmessage('Please make us of the help buttons avliable at the bottom left of your screen or head over to out help tab and we will help you promplty.');
+end;
+
+end.

@@ -1,0 +1,5 @@
+object DmFinaces: TDmFinaces
+  OldCreateOrder = False
+  Height = 463
+  Width = 685
+end
