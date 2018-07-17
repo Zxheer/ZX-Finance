@@ -9,4 +9,20 @@ Delphi based financial services based application to calculate a companies incom
 
 # Screenshots
 
+- 
+
+![alt text](assets/FinancesLogin.png "")
+
+- 
+
+![alt text](assets/FinancesIncomeStat.png "")
+
+-
+
+![alt text](assets/FinancesExpenses.png "")
+
+- 
+
+![alt text](assets/FinancesRatios.png "")
+
 
